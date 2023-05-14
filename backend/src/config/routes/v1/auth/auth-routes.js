@@ -1,11 +1,11 @@
 const express = require("express");
 const {
-  createLoginController,
+  loginController,
 } = require("../../../../web-api/controller/login-controller");
 
 const authRouter = () => {
   const router = express.Router();
-  router.post("/login", createLoginController);
+  router.post("/login", loginController);
   return router;
 };
 

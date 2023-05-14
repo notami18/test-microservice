@@ -1,12 +1,12 @@
-const express = require('express');
-
 const User = require('../../infrastructure/models/user-model');
+const jwt = require("jsonwebtoken");
 
 const createUserService = async (createUser) => {
   try {
     const newUser = new User(createUser);
     await newUser.save();
-    return { message: 'Usuario creado Exitosamente!' };
+    const token = jwt.sign({ _id: newUser._id }, "secretKey");
+    return { message: 'Usuario creado Exitosamente!', token: token };
   } catch (error) {
     throw new error();
   }
