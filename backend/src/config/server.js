@@ -2,6 +2,7 @@
 // const config = require("./environments").config;
 const express = require('express');
 const helmet = require('helmet');
+const cors = require('cors');
 // const hsts = require("hsts");
 const compression = require('compression');
 const {
@@ -14,6 +15,7 @@ const {
 //   dbConnection,
 // } = require("../infraestructure/repositories/postgres-repository");
 const app = express();
+const port = process.env.PORT || 3001;
 const { initApiRoutes } = require('./routes/api-routes');
 app.use(compression());
 app.use(express.json());
@@ -30,12 +32,12 @@ const run = async () => {
     next();
   });
   app.use('/api', initApiRoutes());
+  require('../infrastructure/repositories/mongodb-repository');
+  app.use(cors());
   app.use(logErrors);
   app.use(boomErrorHandler);
   app.use(errorHandler);
   // await dbConnection();
-  app.listen(config.port, () =>
-    console.log(`App Runing on port ${config.port}`)
-  );
+  app.listen(port, () => console.log(`App Runing on port ${port}`));
 };
 module.exports = { run };
